@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+      integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+      crossorigin="" />>
+  
+    <!--D3 cdn-->
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+  
+    <!-- Our CSS -->
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+  <title>Bootstrap Components</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+  <div class="container">
+    <div class="jumbotron">
+      <h1 class="display-4">Inspection Data Chicago!</h1>
+      <p class="lead">Find eating venues that are in violation</p>
+      <hr class="my-4">
+      <p> Not sure we need any more explaination but here is a space for that!</p>
+      </div>
+  </div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+          <div class="caption">
+            <h3>Chicago Restraurant Inspection Map</h3>
+            <!-- The div where we will inject our map -->
+            <div id="map"></div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="caption">
+            <h3>Risk Profile - Search by name</h3>
+            <!-- The div where we will inject our risk pie chart -->
+            <div id="risk-pie"></div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="caption">
+            <h3>Facility Type Distribution</h3>
+            <!-- The div where we will inject our facility distribution pie chart -->
+            <div id="risk-pie"></div>
+           </div>
+        </div>
+    </div>
+
+
+  </div>
+
+
+</body>
+
+</html>
