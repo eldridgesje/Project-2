@@ -10,14 +10,19 @@ from sqlalchemy import create_engine
 from sqlalchemy import func
 import json
 
-# Define the database connection parameters
-username = 'postgres'  # Ideally this would come from config.py (or similar)
-password = 'bootcamp'  # Ideally this would come from config.py (or similar)
-database_name = 'food_inspection_db' # Created in Week 9, Night 1, Exercise 08-Stu_CRUD 
-connection_string = f'postgresql://{username}:{password}@localhost:5432/{database_name}'
+# # Define the database connection parameters
+# username = 'postgres'  # Ideally this would come from config.py (or similar)
+# password = 'bootcamp'  # Ideally this would come from config.py (or similar)
+# database_name = 'food_inspection_db' # Created in Week 9, Night 1, Exercise 08-Stu_CRUD 
+# connection_string = f'postgresql://{username}:{password}@localhost:5432/{database_name}'
+# another way for connection string
+connection_string = "postgres:bootcamp@localhost:5432/food_inspection_db"
 
 # Connect to the database
-engine = create_engine(connection_string)
+# engine = create_engine(connection_string)
+# base = automap_base()
+# base.prepare(engine, reflect=True)
+engine = create_engine(f'postgresql://{connection_string}')
 base = automap_base()
 base.prepare(engine, reflect=True)
 
