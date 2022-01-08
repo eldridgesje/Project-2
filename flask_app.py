@@ -9,14 +9,19 @@ from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 import json
 
-# Define the database connection parameters
-username = 'postgres'  # Ideally this would come from config.py (or similar)
-password = 'bootcamp'  # Ideally this would come from config.py (or similar)
-database_name = 'food_inspection_db' # Created in Week 9, Night 1, Exercise 08-Stu_CRUD 
-connection_string = f'postgresql://{username}:{password}@localhost:5432/{database_name}'
+# # Define the database connection parameters
+# username = 'postgres'  # Ideally this would come from config.py (or similar)
+# password = 'bootcamp'  # Ideally this would come from config.py (or similar)
+# database_name = 'food_inspection_db' # Created in Week 9, Night 1, Exercise 08-Stu_CRUD 
+# connection_string = f'postgresql://{username}:{password}@localhost:5432/{database_name}'
+# another way for connection string
+connection_string = "postgres:bootcamp@localhost:5432/food_inspection_db"
 
 # Connect to the database
-engine = create_engine(connection_string)
+# engine = create_engine(connection_string)
+# base = automap_base()
+# base.prepare(engine, reflect=True)
+engine = create_engine(f'postgresql://{connection_string}')
 base = automap_base()
 base.prepare(engine, reflect=True)
 
@@ -60,6 +65,11 @@ def DictionaryRoute():
 
     # Return results
     return jsonify(all_inspections)
+
+# ****************************** I.Y
+@app.route("/test")
+def TestRoute():
+    return "This is the test route!"
 
 if __name__ == '__main__':
     app.run(debug=True)
