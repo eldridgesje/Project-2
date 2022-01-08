@@ -68,6 +68,13 @@ def DictionaryRoute():
     return jsonify(all_inspections)
 
 @app.route("/api/<vName>/<vType>/<vRisk>/<vResults>/<vViolations>")
+
+# Filter examples:
+
+# /api/CHIPOTLE/%/%/%/%   =   returns all inspections for places named "Chipotle"
+# /api/chip/restaurant/3/pass/%   =   returns all places containing "chip" where the type contains "restaurant" and the risk level contains "3" and the results includes "pass"
+# /api/%/restaurant/%/fail/food   =   returns all places where the type contains "restaurant" and the results includes "fail" and the violations include "food"
+
 def FilteredRoute(vName="%",vType="%",vRisk="%",vResults="%",vViolations="%"):
 
     # Query database
