@@ -7,6 +7,7 @@ import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
+from sqlalchemy import func
 import json
 
 # Define the database connection parameters
@@ -60,6 +61,39 @@ def DictionaryRoute():
 
     # Return results
     return jsonify(all_inspections)
+
+@app.route("/api/<vName>/<vType>/<vRisk>/<vResults>/<vViolations>")
+def FilteredRoute(vName="%",vType="%",vRisk="%",vResults="%",vViolations="%"):
+
+    # Query database
+    session = Session(engine)
+    table_data = session.query(table.dba_name, table.facility_type, table.risk, table.address, table.inspection_date, table.inspection_type, table.results, table.violations, table.location)\
+        .filter(func.upper(table.dba_name).contains(func.upper(vName)))\
+        .filter(func.upper(table.facility_type).contains(func.upper(vType)))\
+        .filter(func.upper(table.risk).contains(func.upper(vRisk)))\
+        .filter(func.upper(table.results).contains(func.upper(vResults)))\
+        .filter(func.upper(table.violations).contains(func.upper(vViolations)))
+    session.close()
+
+    # Create a list of dictionaries
+
+    filtered_inspections = []
+
+    for dba_name, facility_type, risk, address, inspection_date, inspection_type, results, violations, location in table_data:
+        dict = {}
+        dict["dba_name"] = dba_name
+        dict["facility_type"] = facility_type
+        dict["risk"] = risk
+        dict["address"] = address
+        dict["inspection_date"] = inspection_date
+        dict["inspection_type"] = inspection_type
+        dict["results"] = results
+        dict["violations"] = violations
+        dict["location"] = location
+        filtered_inspections.append(dict)
+
+    # Return results
+    return jsonify(filtered_inspections)    
 
 if __name__ == '__main__':
     app.run(debug=True)
