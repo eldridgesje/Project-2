@@ -31,3 +31,5 @@ The `Resources` folder contains the file `updated_food_inspection.csv`, which ca
 
 
 
+# Start the Flask server
+
