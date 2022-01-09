@@ -91,8 +91,9 @@ def FilteredRoute(vName="%",vType="%",vRisk="%",vResults="%",vViolations="%"):
 
     filtered_inspections = []
 
-    for dba_name, facility_type, risk, address, inspection_date, inspection_type, results, violations, location in table_data:
+    for inspection_id, dba_name, facility_type, risk, address, inspection_date, inspection_type, results, violations, location in table_data:
         dict = {}
+        dict["inspection_id"] = inspection_id
         dict["dba_name"] = dba_name
         dict["facility_type"] = facility_type
         dict["risk"] = risk
@@ -106,6 +107,41 @@ def FilteredRoute(vName="%",vType="%",vRisk="%",vResults="%",vViolations="%"):
 
     # Return results
     return jsonify(filtered_inspections)    
+
+@app.route("/api/id_lookup/<vID>/")
+
+def IDRoute(vID="2352683"):
+
+    # Query database
+    session = Session(engine)
+    table_data = session.query(table.inspection_id, table.dba_name, table.facility_type, table.risk, table.address, table.city, table.state, table.zip, table.inspection_date, table.inspection_type, table.results, table.violations, table.location)\
+        .filter_by(inspection_id = vID)
+    session.close()
+
+    # Create a list of dictionaries
+
+    filtered_inspections = []
+
+    for inspection_id, dba_name, facility_type, risk, address, city, state, zip, inspection_date, inspection_type, results, violations, location in table_data:
+        dict = {}
+        dict["inspection_id"] = inspection_id
+        dict["dba_name"] = dba_name
+        dict["facility_type"] = facility_type
+        dict["risk"] = risk
+        dict["address"] = address
+        dict["city"] = city
+        dict["state"] = state
+        dict["zip"] = zip
+        dict["inspection_date"] = inspection_date
+        dict["inspection_type"] = inspection_type
+        dict["results"] = results
+        dict["violations"] = violations
+        dict["location"] = location
+        filtered_inspections.append(dict)
+
+    # Return results
+    return jsonify(filtered_inspections)    
+
 
 if __name__ == '__main__':
     app.run(debug=True)
