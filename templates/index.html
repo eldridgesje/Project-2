@@ -13,6 +13,9 @@
     <!--D3 cdn-->
     <script src="https://d3js.org/d3.v5.min.js"></script>
   
+    <!-- Chart.js for pie chart-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <!-- Our CSS -->
     <link rel="stylesheet" type="text/css" href="static/css/style.css">
    
@@ -110,16 +113,17 @@
         <div class="col-md-6">
           <div class="caption">
             <h3>Search by Name Risk Guage</h3>
-
             <!-- The div where we will inject our risk pie chart -->
-            <div id="risk-pie"></div>
+            <div id="risk-gauge"></div>
           </div>
         </div>
         <div class="col-md-6">
           <div class="caption">
             <h3>Facility Type Distribution</h3>
             <!-- The div where we will inject our facility distribution pie chart -->
-            <div id="risk-pie"></div>
+            <div>
+              <canvas id="risk-pie" width="400" height="400"></canvas>
+            </div>
            </div>
         </div>
     </div>
@@ -138,6 +142,8 @@
   <script src="static/js/logic.js"></script>
   <!-- Table -->
   <script src="static/js/main.js"></script>
+  <!-- Pie Chart-->
+  <script src="static/js/piechart.js"></script> 
 
 </body>
 
