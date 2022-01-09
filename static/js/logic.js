@@ -1,6 +1,8 @@
 
 // Get data from csv file information. Call createMarkers when complete
-d3.csv("./Resources/updated_food_inspection.csv").then(createMarkers); 
+
+// added extra 1 dot !!!!!!!!!------I.Y
+d3.csv("../Resources/updated_food_inspection.csv").then(createMarkers); 
 
 
 function createMap(inspections) {
