@@ -121,8 +121,11 @@
           <div class="caption">
             <h3>Facility Type Distribution</h3>
             <!-- The div where we will inject our facility distribution pie chart -->
-            <div>
-              <canvas id="risk-pie" width="400" height="400"></canvas>
+            <div class="card">           
+              <!-- Custom tooltip canvas -->
+              <canvas id="tooltip-canvas"></canvas>
+              <!-- Canvas for Chart.js -->
+              <canvas id="risk-pie"></canvas>
             </div>
            </div>
         </div>

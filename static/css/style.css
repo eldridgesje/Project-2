@@ -11,5 +11,30 @@ body
   width: 100%;
 
 
+  background-color: #f3f5f7;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
+.card {
+  background-color: #fff;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  /* top: 200px;
+  left: 75px; */
+  /* max-width: 800px; */
+  /* height: 375px; */
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#tooltip-canvas {
+  position: absolute;
+  text-align: center;
+  height: 20%;
+  width: 40%;
+  transform: translate(75%, 200%);
+  /* top: 200px;
+  left: 75px; */
+}
