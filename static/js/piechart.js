@@ -1,5 +1,5 @@
 // FUNCTION FOR THE PIE CHART
-url = "/api/%/%/%/fail/%"
+url = "/api/%/%/%/%/fail/%"
 
 d3.json(url).then(function(piejson) {
     restaurant = 0;

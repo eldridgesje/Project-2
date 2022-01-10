@@ -44,15 +44,16 @@ def DictionaryRoute():
     
     # Query database
     session = Session(engine)
-    table_data = session.query(table.dba_name, table.facility_type, table.risk, table.address, table.inspection_date, table.inspection_type, table.results, table.violations, table.location).all()
+    table_data = session.query(table.inspection_id, table.dba_name, table.facility_type, table.risk, table.address, table.inspection_date, table.inspection_type, table.results, table.violations, table.location).all()
     session.close()
     
     # Create a list of dictionaries
 
     all_inspections = []
 
-    for dba_name, facility_type, risk, address, inspection_date, inspection_type, results, violations, location in table_data:
+    for inspection_id, dba_name, facility_type, risk, address, inspection_date, inspection_type, results, violations, location in table_data:
         dict = {}
+        dict["inspection_id"] = inspection_id
         dict["dba_name"] = dba_name
         dict["facility_type"] = facility_type
         dict["risk"] = risk
@@ -67,7 +68,7 @@ def DictionaryRoute():
     # Return results
     return jsonify(all_inspections)
 
-@app.route("/api/<vName>/<vType>/<vRisk>/<vResults>/<vViolations>")
+@app.route("/api/<vID>/<vName>/<vType>/<vRisk>/<vResults>/<vViolations>")
 
 # Filter examples:
 
@@ -75,11 +76,11 @@ def DictionaryRoute():
 # /api/chip/restaurant/3/pass/%   =   returns all places containing "chip" where the type contains "restaurant" and the risk level contains "3" and the results includes "pass"
 # /api/%/restaurant/%/fail/food   =   returns all places where the type contains "restaurant" and the results includes "fail" and the violations include "food"
 
-def FilteredRoute(vName="%",vType="%",vRisk="%",vResults="%",vViolations="%"):
+def FilteredRoute(vID="%",vName="%",vType="%",vRisk="%",vResults="%",vViolations="%"):
 
     # Query database
     session = Session(engine)
-    table_data = session.query(table.dba_name, table.facility_type, table.risk, table.address, table.inspection_date, table.inspection_type, table.results, table.violations, table.location)\
+    table_data = session.query(table.inspection_id, table.dba_name, table.facility_type, table.risk, table.address, table.inspection_date, table.inspection_type, table.results, table.violations, table.location)\
         .filter(func.upper(table.dba_name).contains(func.upper(vName)))\
         .filter(func.upper(table.facility_type).contains(func.upper(vType)))\
         .filter(func.upper(table.risk).contains(func.upper(vRisk)))\
@@ -91,8 +92,9 @@ def FilteredRoute(vName="%",vType="%",vRisk="%",vResults="%",vViolations="%"):
 
     filtered_inspections = []
 
-    for dba_name, facility_type, risk, address, inspection_date, inspection_type, results, violations, location in table_data:
+    for inspection_id, dba_name, facility_type, risk, address, inspection_date, inspection_type, results, violations, location in table_data:
         dict = {}
+        dict["inspection_id"] = inspection_id
         dict["dba_name"] = dba_name
         dict["facility_type"] = facility_type
         dict["risk"] = risk
@@ -103,6 +105,8 @@ def FilteredRoute(vName="%",vType="%",vRisk="%",vResults="%",vViolations="%"):
         dict["violations"] = violations
         dict["location"] = location
         filtered_inspections.append(dict)
+
+
 
     # Return results
     return jsonify(filtered_inspections)    
