@@ -40,8 +40,8 @@
       </div>
   </div>
 
-  <div class="container">
-    <div class="row margin-top-50">
+  <div class="features">
+    <div class="row">
       <div class="col-md-2">
         <aside class="filters">
           <div class="panel panel-default">
@@ -57,13 +57,10 @@
                   <input class="form-control" id="searchName" type="text" placeholder= "Popeye's"></input>
                   
                   <label for="type">Facility Type</label>
-                  <input class="form-control" id="searchFacility" type="text" placeholder = "Restaurant"></input>
+                  <input class="form-control" id="searchFacilityType" type="text" placeholder = "Restaurant"></input>
                   
                   <label for="risk">Risk Level</label>
                   <input class="form-control" id="searchRiskLevel" type="text" placeholder = "Risk 1 (High)"></input>
-                  
-                  <label for="violations">Violations</label>
-                  <input class="form-control" id="searchViolations" type="text"></input>
                   
                   <label for="result">Results</label>
                   <input class="form-control" id="searchResults" type="text" placeholder = "Pass w/ Conditions"></input>
@@ -81,18 +78,20 @@
          <!-- -- Table -- -->
          <div class="col-md-10">
           <div id="table-area" class="">
-            <table id="ufo-table" class="table table-striped table-hover">
+            <table id="inspection-table" class="table table-striped table-hover">
               <thead>
                 <tr>
-                  <th class="table-head">ID</th>
+                  <th class="table-head">Address</th>
                   <th class="table-head">Name</th>
                   <th class="table-head">Facility Type</th>
-                  <th class="table-head">Risk Levelsk</th>
-                  <th class="table-head">Address</th>
                   <th class="table-head">Inspection Date</th>
+                  <th class="table-head">Inspection ID</th>
                   <th class="table-head">Inspection Type</th>
-                  <th class="table-head">Violations</th>
+                  <th class="table-head">Location</th>
                   <th class="table-head">Results</th>
+                  <th class="table-head">Risk</th>
+                  <th class="table-head">Violations</th>
+
                   
                 </tr>
               </thead>
