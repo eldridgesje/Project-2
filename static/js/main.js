@@ -1,112 +1,362 @@
 console.log("main.js loaded");
 
+var lightmap = null;
 
-// Get the data from url
-url = "/api/%/%/%/%/%/%";
+// Create event handlers
+var searchButton = d3.select("#searchButton");
+var resetButton = d3.select("#resetButton");
 
-d3.json(url).then(function(tableData) {
+searchButton.on("click", updateTable);
+resetButton.on("click", resetFilter);
 
-    console.log(tableData);
+//Establish URL for API
 
-    // Get a reference to the table body
-    var tbody = d3.select("tbody");
-
-    // to create HTML table 
-    tableData.forEach((inspectionReport) => {
-        // console.log(inspectionReport);
-        var row = tbody.append("tr");
-
-        Object.entries(inspectionReport).forEach(([key, value]) => {
-            // console.log(`key = ${key}, value = ${value}`);
-            var cell = row.append("td").text(value);
-        });
-    });
-
+function buildURL() {
     // Select buttons on index.html
     var searchID = d3.select("#searchID");
     var searchName = d3.select("#searchName");
     var searchFacilityType = d3.select("#searchFacilityType");
     var searchRiskLevel = d3.select("#searchRiskLevel");
     var searchResults = d3.select("#searchResults");
-    var searchButton = d3.select("#searchButton");
-    // var resetButton = d3.select("#resetButton");
 
-    // Create event handlers
-    searchButton.on("click", runEnter);
+    // find the data user searches
+    var inputID = "%" + searchID.property("value").trim();
+    var inputName = "%" + searchName.property("value").trim();
+    var inputFacilityType = "%" + searchFacilityType.property("value").trim();
+    var inputRiskLevel = "%" + searchRiskLevel.property("value").trim();
+    var inputResults = "%" + searchResults.property("value").trim();
+    
+    apiURL = `api/${inputID}/${inputName}/${inputFacilityType}/${inputRiskLevel}/${inputResults}`;
 
-    function runEnter() {
-        // Setup: Prevent the page from refreshing on events
-        d3.event.preventDefault();
-        // Delete the previously loaded table rows (if there were any)
-        tbody.html("");
+    return d3.json(apiURL);
+    }
 
+// Establish table reset function
 
-        // find the data user searches
-        var inputID = searchID.property("value").trim();
-        var inputName = searchName.property("value").toLowerCase().trim();
-        var inputFacilityType = searchFacilityType.property("value").toLowerCase().trim();
-        var inputRiskLevel = searchRiskLevel.property("value").toLowerCase().trim();
-        var inputResults = searchResults.property("value").toLowerCase().trim();
+function resetFilter() {
+    document.getElementById("mainForm").reset();
+    console.log(d3.select("#searchName").property("value").trim());
 
-        // console.log(inputID);
-        // console.log(inputName);
-        // console.log(inputFaciltyType);
-        // console.log(inputRiskLevel);
-        // console.log(inputViolations);
-        // console.log(inputResults);
+    updateTable();
+};
 
+// Establish start-up function
 
+function startUp() {
+    buildURL().then(function(startData) {
+    console.log(startData);
+    drawTable(startData);
+    drawDonut(startData);
+    drawMap(startData);
+    console.log("startup");
+    }
+    )};
 
-        var filteredData = tableData.filter(tableData => (tableData.inspection_id == inputID || inputID == "") &&
-                  (tableData.dba_name == inputName || inputName == "") &&
-                  (tableData.facility_type == inputFacilityType|| inputFacilityType == "") &&
-                  (tableData.risk == inputRiskLevel || inputRiskLevel == "") &&
-                  (tableData.Results == inputResults || inputResults == "")
-        );
-   
+// Establish update function
 
-        filteredData.forEach((inspectionReport) => {
+function updateTable() {
+    buildURL().then(function(updateData){
+    var tbody = d3.select("tbody");
+    // Delete the previously loaded table rows (if there were any)
+    tbody.html("");
+
+    drawTable(updateData);
+
+    d3.select("#tooltip-canvas").remove();
+    d3.select("#risk-pie").remove();
+
+    d3.select("#donut").append("canvas").attr("id", "tooltip-canvas");
+    d3.select("#donut").append("canvas").attr("id", "risk-pie");
+
+    var testCanvas = d3.select("#tooltip-canvas");
+
+    console.log(testCanvas);
+
+    drawDonut(updateData);
+
+    console.log("updated");
+    
+    layers.HIGH_RISK.clearLayers();
+    layers.MEDIUM_RISK.clearLayers();
+    layers.LOW_RISK.clearLayers();
+    drawMap(updateData);
+})
+};
+
+// Establish function to draw table
+
+function drawTable(tableData) {
+        // Get a reference to the table body
+        var tbody = d3.select("tbody");
+
+        tableData.forEach((inspectionReport) => {
             // Append a row to the table for each result.
-            var row = tbody.append("tr");
-            // Append the values of each of the objects in the result as the created rows' content.
-            Object.entries(inspectionReport).forEach(([key, value]) => {
-               var cell = row.append("td");
-               cell.text(value);
-               });
+            tbody.append("tr").html(`<td>${inspectionReport.address}</th>
+            <td>${inspectionReport.dba_name}</th>
+            <td>${inspectionReport.facility_type}</th>
+            <td>${inspectionReport.inspection_date}</th>
+            <td>${inspectionReport.inspection_id}</th>
+            <td>${inspectionReport.inspection_type}</th>
+            <td>${inspectionReport.location}</th>
+            <td>${inspectionReport.results}</th>
+            <td>${inspectionReport.risk}</th>
+            <td>${inspectionReport.violations}</th>`)
             });
-        }
-    // *************************
-    //  // Create event handlers
-    // resetButton.on("click", resetData);
-
-    // function resetData() {
-    //      // Setup: Prevent the page from refreshing on events
-    //      d3.event.preventDefault();
-    //      // Delete the previously loaded table rows (if there were any)
-    //      tbody.html("");
-
-    // ************************
-    
-
-    document.getElementById("resetButton").onclick = function() {
-        document.getElementById("searchID").innerHTML = "";
-        document.getElementById("searchName").innerHTML = "";
-        document.getElementById("searchFacilityType").innerHTML = "";
-        document.getElementById("searchRiskLevel").innerHTML = "";
-        // document.getElementById("searchViolations").innerHTML = "";
-        document.getElementById("searchResults").innerHTML = "";
-
-
-    
-
-    tableData.forEach((inspectionReport) => {
-        // Append a row to the table for each result.
-        var row = tbody.append("tr");
-        // Append the values of each of the objects in the result as the created rows' content.
-        Object.entries(inspectionReport).forEach(([key, value]) => {
-        var cell = row.append("td");
-        cell.text(value);
-           });
-        });
     };
-});    
+
+// Draw starting table
+
+
+// FUNCTION FOR THE PIE CHART
+
+
+function drawDonut(donutData) {
+        restaurant = 0;
+        childServices = 0;
+        daycare = 0;
+        grocery = 0;
+        school = 0;
+        other = 0;
+
+        donutData.forEach(function (item, index) {
+
+            if (item["facility_type"].toLowerCase().includes("restaurant")) {
+                restaurant ++;
+            }
+            else if (item["facility_type"].toLowerCase().includes("children's services")) {
+                childServices ++;
+            }
+            else if (item["facility_type"].toLowerCase().includes("daycare")) {
+                daycare ++;
+            }
+            else if (item["facility_type"].toLowerCase().includes("grocery")) {
+                grocery ++;
+            }
+            else if (item["facility_type"].toLowerCase().includes("school")) {
+                school ++;
+            }
+            else  {
+                other ++;
+            }
+
+        }
+        );
+
+        const ctx = document.getElementById('risk-pie');
+        const tooltipCanvas = document.getElementById("tooltip-canvas");
+
+        function textInCenter(value, label) {
+            var cenTxt = tooltipCanvas.getContext('2d');
+            var laTxt = tooltipCanvas.getContext('2d');
+            
+            // Draw value
+            cenTxt.fillStyle = '#000000';
+            cenTxt.font = '48px sans-serif';
+            cenTxt.textBaseline = 'middle';
+        
+            // Define text position
+            var textPosition = {
+            x: Math.round((tooltipCanvas.width - cenTxt.measureText(value).width) / 2),
+            y: tooltipCanvas.height / 2,
+            };
+        
+            cenTxt.fillText(value, textPosition.x, textPosition.y);
+        
+            // Draw Label
+            laTxt.fillStyle = '#666666';
+            laTxt.font = '36px sans-serif';
+            laTxt.textBaseline = 'middle';
+        
+            // Define label position
+            var labelPosition = {
+            x: Math.round((tooltipCanvas.width - laTxt.measureText(label).width) / 2),
+            y: (tooltipCanvas.height / 2)+35,
+            };
+        
+            laTxt.fillText(label, labelPosition.x, labelPosition.y); 
+        };
+        
+        const myChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Restaurants', 'Schools', 'Grocery Stores', 'Daycare', "Children's Services", 'Other'],
+                datasets: [{
+                    label: '# of Inspections',
+                    data: [restaurant, school, grocery, daycare, childServices, other],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.4)',
+                        'rgba(54, 162, 235, 0.4)',
+                        'rgba(255, 206, 86, 0.4)',
+                        'rgba(75, 192, 192, 0.4)',
+                        'rgba(153, 102, 255, 0.4)',
+                        'rgba(255, 159, 64, 0.4)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            }
+        });
+        
+        var value = (restaurant+childServices+daycare+grocery+school+other);
+        var label = "Total"
+
+        textInCenter(value, label);
+
+        var testCanvas = d3.select("#tooltip-canvas");
+        console.log(testCanvas);
+}
+
+
+//Map Stuff
+
+
+// Create the tile layer that will be the background of our map
+lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+maxZoom: 18,
+id: "light-v10",
+accessToken: API_KEY
+});
+
+    // Initialize all of the LayerGroups we'll be using
+var layers = {
+HIGH_RISK: new L.LayerGroup(),
+MEDIUM_RISK: new L.LayerGroup(),
+LOW_RISK: new L.LayerGroup(),
+};
+
+// Create the map with our layers
+var map = L.map("map-id", {
+center: [41.879605089914115, -87.62698620778097],  
+zoom: 15,
+layers: [
+    layers.HIGH_RISK,
+    layers.MEDIUM_RISK,
+    layers.LOW_RISK
+]
+});
+
+// Add our 'lightmap' tile layer to the map
+lightmap.addTo(map);
+
+
+// Create an overlays object to add to the layer control
+var overlays = {
+    "High Risk": layers.HIGH_RISK,
+    "Medium Risk": layers.MEDIUM_RISK,
+    "Low Risk": layers.LOW_RISK
+    };
+
+    // Create a control for our layers, add our overlay layers to it
+    L.control.layers(null, overlays).addTo(map);
+
+    // Create a legend to display information about our map
+    var info = L.control({
+    position: "bottomright"
+    });
+
+    // When the layer control is added, insert a div with the class of "legend"
+    info.onAdd = function() {
+    var div = L.DomUtil.create("div", "legend");
+    return div;
+    };
+    // Add the info legend to the map
+    info.addTo(map);
+
+    // // Initialize an object containing icons for each layer group
+    var icons = {
+    HIGH_RISK: L.ExtraMarkers.icon({
+        icon: "ion-settings",
+        iconColor: "white",
+        markerColor: "yellow",
+        shape: "star"
+    }),
+    MEDIUM_RISK: L.ExtraMarkers.icon({
+        icon: "ion-android-bicycle",
+        iconColor: "white",
+        markerColor: "red",
+        shape: "circle"
+    }),
+    LOW_RISK: L.ExtraMarkers.icon({
+        icon: "ion-minus-circled",
+        iconColor: "white",
+        markerColor: "blue-dark",
+        shape: "penta"
+    })
+    };
+    
+
+function drawMap (data) {
+
+    // Create an object to keep of the number of restaurants in each category
+    var restaurantCount = {
+        HIGH_RISK: 0,
+        MEDIUM_RISK: 0,
+        LOW_RISK: 0
+    };
+
+    // Initialize a variable to track the risk level of the current restaurant
+    var riskLevel; 
+
+    // Loop through all restaurants ... 
+    data = data.slice(0, 999); // I added this to limit the number
+    for (var i = 0; i < data.length; i++) {
+
+        // ... get the current restaurant 
+        var currentRestaurant = data[i]; 
+
+        // ... determine its risk level
+        if (currentRestaurant.risk === "Risk 1 (High)") {
+        riskLevel = "HIGH_RISK";
+        }
+
+        else if (currentRestaurant.risk === "Risk 2 (Medium)") {
+        riskLevel = "MEDIUM_RISK";
+        }
+
+        else if (currentRestaurant.risk === "Risk 3 (Low)") {
+        riskLevel = "LOW_RISK";
+        }
+
+        // ... increment the appropriate count
+        restaurantCount[riskLevel]++; 
+
+        // ... create a marker 
+        var newMarker = L.marker([currentRestaurant.latitude, currentRestaurant.longitude], {
+        icon: icons[riskLevel]
+        }); 
+
+        newMarker.bindPopup(currentRestaurant["DBA Name"]); 
+
+        // ... and add it to the appropriate layer
+        newMarker.addTo(layers[riskLevel]);    
+    }
+
+    console.log(restaurantCount); 
+
+    // Call the updateLegend function, which will... update the legend!
+    updateLegend(restaurantCount);
+
+    // Update the legend's innerHTML with the last updated time and station count
+    function updateLegend(restaurantCount) {
+    document.querySelector(".legend").innerHTML = [
+        "<p class='coming-soon'>High Risk: " + restaurantCount.HIGH_RISK + "</p>",
+        "<p class='empty'>Medium Risk: " + restaurantCount.MEDIUM_RISK + "</p>",
+        "<p class='low'>Low Risk: " + restaurantCount.LOW_RISK + "</p>"
+    ].join("");
+    };
+
+
+}
+
+
+
+
+startUp()
