@@ -27,6 +27,7 @@ function buildURL() {
     var inputResults = "%" + searchResults.property("value").trim();
     
     apiURL = `api/${inputID}/${inputName}/${inputFacilityType}/${inputRiskLevel}/${inputResults}`;
+    console.log("Calling API");
 
     return d3.json(apiURL);
     }
@@ -333,7 +334,7 @@ function drawMap (data) {
         icon: icons[riskLevel]
         }); 
 
-        newMarker.bindPopup(currentRestaurant["DBA Name"]); 
+        newMarker.bindPopup(`<b>${currentRestaurant.dba_name}</b> <br> ${currentRestaurant.address} <br> ${currentRestaurant.city}, ${currentRestaurant.state}  ${currentRestaurant.zip} <br> <b>Inspection ID: </b>${currentRestaurant.inspection_id}`); 
 
         // ... and add it to the appropriate layer
         newMarker.addTo(layers[riskLevel]);    
