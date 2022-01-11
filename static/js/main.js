@@ -222,7 +222,7 @@ function drawDonut(donutData) {
 lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
 attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
 maxZoom: 18,
-id: "light-v10",
+id: "streets-v11", //replaced "light-v10"
 accessToken: API_KEY
 });
 
@@ -274,20 +274,14 @@ var overlays = {
     // // Initialize an object containing icons for each layer group
     var icons = {
     HIGH_RISK: L.ExtraMarkers.icon({
-        icon: "ion-settings",
-        iconColor: "white",
         markerColor: "yellow",
         shape: "star"
     }),
     MEDIUM_RISK: L.ExtraMarkers.icon({
-        icon: "ion-android-bicycle",
-        iconColor: "white",
         markerColor: "red",
         shape: "circle"
     }),
     LOW_RISK: L.ExtraMarkers.icon({
-        icon: "ion-minus-circled",
-        iconColor: "white",
         markerColor: "blue-dark",
         shape: "penta"
     })
@@ -348,8 +342,8 @@ function drawMap (data) {
     // Update the legend's innerHTML with the last updated time and station count
     function updateLegend(restaurantCount) {
     document.querySelector(".legend").innerHTML = [
-        "<p class='coming-soon'>High Risk: " + restaurantCount.HIGH_RISK + "</p>",
-        "<p class='empty'>Medium Risk: " + restaurantCount.MEDIUM_RISK + "</p>",
+        "<p class='high'>High Risk: " + restaurantCount.HIGH_RISK + "</p>",
+        "<p class='medium'>Medium Risk: " + restaurantCount.MEDIUM_RISK + "</p>",
         "<p class='low'>Low Risk: " + restaurantCount.LOW_RISK + "</p>"
     ].join("");
     };
