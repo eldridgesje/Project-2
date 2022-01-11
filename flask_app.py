@@ -46,20 +46,23 @@ def DictionaryRoute():
     
     # Query database
     session = Session(engine)
-    table_data = session.query(table.inspection_id, table.dba_name, table.facility_type, table.risk, table.address, table.inspection_date, table.inspection_type, table.results, table.violations, table.latitude, table.longitude, table.location).all()
+    table_data = session.query(table.inspection_id, table.dba_name, table.facility_type, table.risk, table.address, table.city, table.state, table.zip, table.inspection_date, table.inspection_type, table.results, table.violations, table.latitude, table.longitude, table.location).all()
     session.close()
     
     # Create a list of dictionaries
 
     all_inspections = []
 
-    for inspection_id, dba_name, facility_type, risk, address, inspection_date, inspection_type, results, violations, latitude, longitude, location in table_data:
+    for inspection_id, dba_name, facility_type, risk, address, city, state, zip, inspection_date, inspection_type, results, violations, latitude, longitude, location in table_data:
         dict = {}
         dict["inspection_id"] = inspection_id
         dict["dba_name"] = dba_name
         dict["facility_type"] = facility_type
         dict["risk"] = risk
         dict["address"] = address
+        dict["city"] = city
+        dict["state"] = state
+        dict["zip"] = zip
         dict["inspection_date"] = inspection_date
         dict["inspection_type"] = inspection_type
         dict["results"] = results
@@ -84,7 +87,7 @@ def FilteredRoute(vID="%",vName="%",vType="%",vRisk="%",vResults="%"):
 
     # Query database
     session = Session(engine)
-    table_data = session.query(table.inspection_id, table.dba_name, table.facility_type, table.risk, table.address, table.inspection_date, table.inspection_type, table.results, table.violations, table.latitude, table.longitude, table.location)\
+    table_data = session.query(table.inspection_id, table.dba_name, table.facility_type, table.risk, table.address, table.city, table.state, table.zip, table.inspection_date, table.inspection_type, table.results, table.violations, table.latitude, table.longitude, table.location)\
         .filter(cast (table.inspection_id, String).contains(vID))\
         .filter(func.upper(table.dba_name).contains(func.upper(vName)))\
         .filter(func.upper(table.facility_type).contains(func.upper(vType)))\
@@ -97,13 +100,16 @@ def FilteredRoute(vID="%",vName="%",vType="%",vRisk="%",vResults="%"):
 
     filtered_inspections = []
 
-    for inspection_id, dba_name, facility_type, risk, address, inspection_date, inspection_type, results, violations, latitude, longitude, location in table_data:
+    for inspection_id, dba_name, facility_type, risk, address, city, state, zip, inspection_date, inspection_type, results, violations, latitude, longitude, location in table_data:
         dict = {}
         dict["inspection_id"] = inspection_id
         dict["dba_name"] = dba_name
         dict["facility_type"] = facility_type
         dict["risk"] = risk
         dict["address"] = address
+        dict["city"] = city
+        dict["state"] = state
+        dict["zip"] = zip
         dict["inspection_date"] = inspection_date
         dict["inspection_type"] = inspection_type
         dict["results"] = results
