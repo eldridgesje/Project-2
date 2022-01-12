@@ -122,8 +122,6 @@ function drawTable(tableData) {
             <td>${inspectionReport.facility_type}</th>
             <td>${inspectionReport.inspection_date}</th>
             <td>${inspectionReport.inspection_id}</th>
-            <td>${inspectionReport.inspection_type}</th>
-            <td>${inspectionReport.location}</th>
             <td>${inspectionReport.results}</th>
             <td>${inspectionReport.risk}</th>
             <td>${inspectionReport.violations}</th>`)
