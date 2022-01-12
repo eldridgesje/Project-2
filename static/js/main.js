@@ -261,7 +261,7 @@ LOW_RISK: new L.LayerGroup(),
 // Create the map with our layers
 var map = L.map("map-id", {
 center: [41.879605089914115, -87.62698620778097],  
-zoom: 15,
+zoom: 13,
 layers: [
     layers.HIGH_RISK,
     layers.MEDIUM_RISK,
