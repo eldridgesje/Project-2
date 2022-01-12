@@ -106,11 +106,11 @@ function drawTable(tableData) {
 
         tableData.forEach((inspectionReport) => {
             // Append a row to the table for each result.
-            tbody.append("tr").html(`<td>${inspectionReport.address}</th>
+            tbody.append("tr").html(`<td>${inspectionReport.inspection_id}</th>
+            <td>${inspectionReport.address}</th>
             <td>${inspectionReport.dba_name}</th>
             <td>${inspectionReport.facility_type}</th>
             <td>${inspectionReport.inspection_date}</th>
-            <td>${inspectionReport.inspection_id}</th>
             <td>${inspectionReport.results}</th>
             <td>${inspectionReport.risk}</th>
             <td>${inspectionReport.violations}</th>`)
