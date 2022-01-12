@@ -12,18 +12,12 @@ from sqlalchemy import cast
 from sqlalchemy import String
 import json
 
-# # Define the database connection parameters
-# username = 'postgres'  # Ideally this would come from config.py (or similar)
-# password = 'bootcamp'  # Ideally this would come from config.py (or similar)
-# database_name = 'food_inspection_db' # Created in Week 9, Night 1, Exercise 08-Stu_CRUD 
-# connection_string = f'postgresql://{username}:{password}@localhost:5432/{database_name}'
-# another way for connection string
-connection_string = "postgres:bootcamp@localhost:5432/food_inspection_db"
+# Define the database connection parameters
+username = "postgres"
+password = "bootcamp"
+connection_string = f"{username}:{password}@localhost:5432/food_inspection_db"
 
 # Connect to the database
-# engine = create_engine(connection_string)
-# base = automap_base()
-# base.prepare(engine, reflect=True)
 engine = create_engine(f'postgresql://{connection_string}')
 base = automap_base()
 base.prepare(engine, reflect=True)
@@ -77,11 +71,6 @@ def DictionaryRoute():
 
 @app.route("/api/<vID>/<vName>/<vType>/<vRisk>/<vResults>")
 
-# Filter examples:
-
-# /api/%/CHIPOTLE/%/%/%  =   returns all inspections for places named "Chipotle"
-# /api/%/chip/restaurant/3/pass   =   returns all places containing "chip" where the type contains "restaurant" and the risk level contains "3" and the results includes "pass"
-# /api/%/%/restaurant/%/fail   =   returns all places where the type contains "restaurant" and the results includes "fail"
 
 def FilteredRoute(vID="%",vName="%",vType="%",vRisk="%",vResults="%"):
 
