@@ -137,29 +137,29 @@ function drawTable(tableData) {
 
 
 function drawDonut(donutData) {
-        restaurant = 0;
-        childServices = 0;
-        daycare = 0;
-        grocery = 0;
-        school = 0;
+        pass = 0;
+        passCon = 0;
+        outOfBusiness = 0;
+        fail = 0;
+        noEntry = 0;
         other = 0;
 
         donutData.forEach(function (item, index) {
 
-            if (item["facility_type"].toLowerCase().includes("restaurant")) {
-                restaurant ++;
+            if (item["results"].toLowerCase() == "pass") {
+                pass ++;
             }
-            else if (item["facility_type"].toLowerCase().includes("children's services")) {
-                childServices ++;
+            else if (item["results"].toLowerCase().includes("conditions")) {
+                passCon ++;
             }
-            else if (item["facility_type"].toLowerCase().includes("daycare")) {
-                daycare ++;
+            else if (item["results"].toLowerCase().includes("out of business")) {
+                outOfBusiness ++;
             }
-            else if (item["facility_type"].toLowerCase().includes("grocery")) {
-                grocery ++;
+            else if (item["results"].toLowerCase().includes("fail")) {
+                fail ++;
             }
-            else if (item["facility_type"].toLowerCase().includes("school")) {
-                school ++;
+            else if (item["results"].toLowerCase().includes("no entry")) {
+                noEntry ++;
             }
             else  {
                 other ++;
@@ -202,13 +202,14 @@ function drawDonut(donutData) {
             laTxt.fillText(label, labelPosition.x, labelPosition.y); 
         };
         
+        Chart.defaults.font.size = 20;
         const myChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
-                labels: ['Restaurants', 'Schools', 'Grocery Stores', 'Daycare', "Children's Services", 'Other'],
+                labels: ['Pass', 'Pass w/ Conditions', 'Fail', 'Out of Business', "No Entry", 'Other'],
                 datasets: [{
                     label: '# of Inspections',
-                    data: [restaurant, school, grocery, daycare, childServices, other],
+                    data: [pass, passCon, fail, outOfBusiness, noEntry, other],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.4)',
                         'rgba(54, 162, 235, 0.4)',
@@ -230,8 +231,8 @@ function drawDonut(donutData) {
             }
         });
         
-        var value = (restaurant+childServices+daycare+grocery+school+other);
-        var label = "Total"
+        var value = (pass+passCon+fail+outOfBusiness+noEntry+other);
+        var label = "Total Facilities"
 
         textInCenter(value, label);
 
