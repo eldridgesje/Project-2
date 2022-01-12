@@ -16,7 +16,6 @@ function buildURL() {
     // Select buttons on index.html
     var searchID = d3.select("#searchID");
     var searchName = d3.select("#searchName");
-    console.log(searchName);
     var searchFacilityType = d3.select("#searchFacilityType");
     var searchRiskLevel = d3.select("#searchRiskLevel");
     var searchResults = d3.select("#searchResults");
@@ -24,14 +23,12 @@ function buildURL() {
     // find the data user searches
     checkID = searchID.property("value").trim();
     checkName = searchName.property("value").trim();
-    console.log(checkName);
     checkFacilityType = searchFacilityType.property("value").trim();
     checkRiskLevel = searchRiskLevel.property("value").trim();
     checkResults = searchResults.property("value").trim();
 
     var inputID = "%";
     var inputName = "%";
-    console.log(inputName);
     var inputFacilityType = "%";
     var inputRiskLevel = "%";
     var inputResults = "%";
@@ -41,7 +38,6 @@ function buildURL() {
         else {checkID = "%"};
     if (checkName != "") {inputName = checkName}
         else {checkName = "%"};
-    console.log(checkName);
     if (checkFacilityType != "") {inputFacilityType = checkFacilityType}
         else {checkFacilityType = "%"};
     if (checkRiskLevel != "") {inputRiskLevel = checkRiskLevel}
@@ -51,8 +47,6 @@ function buildURL() {
 
 
     apiURL = `api/${inputID}/${inputName}/${inputFacilityType}/${inputRiskLevel}/${inputResults}`;
-    console.log("Calling API");
-    console.log(apiURL);
 
     return d3.json(apiURL);
     }
@@ -61,7 +55,6 @@ function buildURL() {
 
 function resetFilter() {
     document.getElementById("mainForm").reset();
-    console.log(d3.select("#searchName").property("value").trim());
 
     updateTable();
 };
@@ -70,11 +63,9 @@ function resetFilter() {
 
 function startUp() {
     buildURL().then(function(startData) {
-    console.log(startData);
     drawTable(startData);
     drawDonut(startData);
     drawMap(startData);
-    console.log("startup");
     }
     )};
 
@@ -83,8 +74,10 @@ function startUp() {
 function updateTable() {
     buildURL().then(function(updateData){
     var tbody = d3.select("tbody");
+
     // Delete the previously loaded table rows (if there were any)
     tbody.html("");
+    d3.select("#resultMessage").select("p").remove();
 
     drawTable(updateData);
 
@@ -96,11 +89,7 @@ function updateTable() {
 
     var testCanvas = d3.select("#tooltip-canvas");
 
-    console.log(testCanvas);
-
     drawDonut(updateData);
-
-    console.log("updated");
     
     layers.HIGH_RISK.clearLayers();
     layers.MEDIUM_RISK.clearLayers();
@@ -126,6 +115,16 @@ function drawTable(tableData) {
             <td>${inspectionReport.risk}</th>
             <td>${inspectionReport.violations}</th>`)
             });
+        var limitDiv = d3.select("#resultMessage");
+        var resultCount = tableData.length;
+
+        if (resultCount < 500) {
+        limitDiv.append("p").html(`<b>Returning ${resultCount} results matching your filters.</b>`);
+        }
+        else {
+        limitDiv.append("p").html(`<b>Search returns limited to 500 results.</b>`);
+        }
+
     };
 
 // Draw starting table
@@ -194,7 +193,7 @@ function drawDonut(donutData) {
             // Define label position
             var labelPosition = {
             x: Math.round((tooltipCanvas.width - laTxt.measureText(label).width) / 2),
-            y: (tooltipCanvas.height / 2)+35,
+            y: (tooltipCanvas.height / 2)+40,
             };
         
             laTxt.fillText(label, labelPosition.x, labelPosition.y); 
@@ -229,13 +228,12 @@ function drawDonut(donutData) {
             }
         });
         
-        var value = (pass+passCon+fail+outOfBusiness+noEntry+other);
-        var label = "Total Facilities"
+        var value = donutData.length;
+        var label = "Facilities"
 
         textInCenter(value, label);
 
         var testCanvas = d3.select("#tooltip-canvas");
-        console.log(testCanvas);
 }
 
 
@@ -303,11 +301,11 @@ var overlays = {
     }),
     MEDIUM_RISK: L.ExtraMarkers.icon({
         markerColor: "yellow",
-        shape: "circle"
+        shape: "penta"
     }),
     LOW_RISK: L.ExtraMarkers.icon({
-        markerColor: "blue-dark",
-        shape: "penta"
+        markerColor: "green",
+        shape: "circle"
     })
     };
     
@@ -358,8 +356,6 @@ function drawMap (data) {
         newMarker.addTo(layers[riskLevel]);    
     }
 
-    console.log(restaurantCount); 
-
     // Call the updateLegend function, which will... update the legend!
     updateLegend(restaurantCount);
 
@@ -372,10 +368,7 @@ function drawMap (data) {
     ].join("");
     };
 
-
 }
-
-
 
 
 startUp()
