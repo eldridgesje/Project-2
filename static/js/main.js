@@ -200,7 +200,7 @@ function drawDonut(donutData) {
             laTxt.fillText(label, labelPosition.x, labelPosition.y); 
         };
         
-        Chart.defaults.font.size = 20;
+        Chart.defaults.font.size = 16;
         const myChart = new Chart(ctx, {
             type: 'doughnut',
             data: {
@@ -209,20 +209,20 @@ function drawDonut(donutData) {
                     label: '# of Inspections',
                     data: [pass, passCon, fail, outOfBusiness, noEntry, other],
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.4)',
-                        'rgba(54, 162, 235, 0.4)',
-                        'rgba(255, 206, 86, 0.4)',
-                        'rgba(75, 192, 192, 0.4)',
-                        'rgba(153, 102, 255, 0.4)',
-                        'rgba(255, 159, 64, 0.4)'
+                        'rgba(0, 209, 0, 0.6)',
+                        'rgba(155, 209, 155, 0.6)',
+                        'rgba(209, 0, 0, 0.6)',
+                        'rgba(50, 50, 50, 0.6)',
+                        'rgba(200, 200, 200, 0.6)',
+                        'rgba(255, 255, 150, 0.6)'
                     ],
                     borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
+                        'rgba(0, 209, 0, 1)',
+                        'rgba(155, 209, 155, 1)',
+                        'rgba(209, 0, 0, 1)',
+                        'rgba(50, 50, 50, 1)',
+                        'rgba(200, 200, 200, 1)',
+                        'rgba(255, 255, 150, 1)'
                     ],
                     borderWidth: 1
                 }]
@@ -298,11 +298,11 @@ var overlays = {
     // // Initialize an object containing icons for each layer group
     var icons = {
     HIGH_RISK: L.ExtraMarkers.icon({
-        markerColor: "yellow",
+        markerColor: "red",
         shape: "star"
     }),
     MEDIUM_RISK: L.ExtraMarkers.icon({
-        markerColor: "red",
+        markerColor: "yellow",
         shape: "circle"
     }),
     LOW_RISK: L.ExtraMarkers.icon({
