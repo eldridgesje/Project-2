@@ -88,11 +88,11 @@ def FilteredRoute(vID="%",vName="%",vType="%",vRisk="%",vResults="%"):
     # Query database
     session = Session(engine)
     table_data = session.query(table.inspection_id, table.dba_name, table.facility_type, table.risk, table.address, table.city, table.state, table.zip, table.inspection_date, table.inspection_type, table.results, table.violations, table.latitude, table.longitude, table.location)\
-        .filter(cast (table.inspection_id, String).contains(vID))\
-        .filter(func.upper(table.dba_name).contains(func.upper(vName)))\
-        .filter(func.upper(table.facility_type).contains(func.upper(vType)))\
-        .filter(func.upper(table.risk).contains(func.upper(vRisk)))\
-        .filter(func.upper(table.results).contains(func.upper(vResults)))\
+        .filter(table.inspection_id.ilike(f"%{vID}%"))\
+        .filter(table.dba_name.ilike(f"%{vName}%"))\
+        .filter(table.facility_type.ilike(f"%{vType}%"))\
+        .filter(table.risk.ilike(f"%{vRisk}%"))\
+        .filter(table.results.ilike(f"%{vResults}%"))\
         .limit(500).all()
     session.close()
 

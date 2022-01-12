@@ -4,7 +4,7 @@
 
 CREATE TABLE "food_inspection" (
     "key" serial   NOT NULL,
-    "inspection_id" int   NOT NULL,
+    "inspection_id" varchar   NOT NULL,
     "dba_name" varchar   NOT NULL,
     "facility_type" varchar   NOT NULL,
     "risk" varchar   NOT NULL,

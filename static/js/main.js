@@ -11,23 +11,48 @@ resetButton.on("click", resetFilter);
 
 //Establish URL for API
 
+
 function buildURL() {
     // Select buttons on index.html
     var searchID = d3.select("#searchID");
     var searchName = d3.select("#searchName");
+    console.log(searchName);
     var searchFacilityType = d3.select("#searchFacilityType");
     var searchRiskLevel = d3.select("#searchRiskLevel");
     var searchResults = d3.select("#searchResults");
 
     // find the data user searches
-    var inputID = "%" + searchID.property("value").trim();
-    var inputName = "%" + searchName.property("value").trim();
-    var inputFacilityType = "%" + searchFacilityType.property("value").trim();
-    var inputRiskLevel = "%" + searchRiskLevel.property("value").trim();
-    var inputResults = "%" + searchResults.property("value").trim();
-    
+    checkID = searchID.property("value").trim();
+    checkName = searchName.property("value").trim();
+    console.log(checkName);
+    checkFacilityType = searchFacilityType.property("value").trim();
+    checkRiskLevel = searchRiskLevel.property("value").trim();
+    checkResults = searchResults.property("value").trim();
+
+    var inputID = "%";
+    var inputName = "%";
+    console.log(inputName);
+    var inputFacilityType = "%";
+    var inputRiskLevel = "%";
+    var inputResults = "%";
+     
+    //Replace the data as needed
+    if (checkID != "") {inputID = checkID}
+        else {checkID = "%"};
+    if (checkName != "") {inputName = checkName}
+        else {checkName = "%"};
+    console.log(checkName);
+    if (checkFacilityType != "") {inputFacilityType = checkFacilityType}
+        else {checkFacilityType = "%"};
+    if (checkRiskLevel != "") {inputRiskLevel = checkRiskLevel}
+        else {checkRiskLevel = "%"};
+    if (checkResults != "") {inputResults = checkResults}
+        else {checkResults = "%"};
+
+
     apiURL = `api/${inputID}/${inputName}/${inputFacilityType}/${inputRiskLevel}/${inputResults}`;
     console.log("Calling API");
+    console.log(apiURL);
 
     return d3.json(apiURL);
     }
