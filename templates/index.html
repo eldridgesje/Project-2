@@ -29,6 +29,12 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   
 </head>
+<style>/* Rounded border */
+  hr.rounded {
+    border-top: 8px solid #bbb;
+    border-radius: 5px;
+</style>
+
 <body>
 
   <div class="container">
@@ -42,8 +48,8 @@
   </div>
 
   <div class="features">
-    <div class="row" id="tableAndFilter">
-      <div class="col-md-2">
+    <div class="row" id="graphsAndFilter">
+      <div class="col-lg-2">
         <aside class="filters">
           <div class="panel panel-default">
             <div class="panel-body">
@@ -53,15 +59,20 @@
                   <li class="filter list-group-item">
                   <label for="ID">ID</label>
                   <input class="form-control" id="searchID" type="text" placeholder= "2352683"></input>
+
+                  <hr class="dashed"> 
                   <label for="date">Name</label>
                   <input class="form-control" id="searchName" type="text" placeholder= "Popeye's"></input>
-                  
+
+                  <hr class="dashed"> 
                   <label for="type">Facility Type</label>
                   <input class="form-control" id="searchFacilityType" type="text" placeholder = "Restaurant"></input>
-                  
+
+                  <hr class="dashed"> 
                   <label for="risk">Risk Level</label>
                   <input class="form-control" id="searchRiskLevel" type="text" placeholder = "Risk 1 (High)"></input>
-                  
+
+                  <hr class="dashed"> 
                   <label for="result">Results</label>
                   <input class="form-control" id="searchResults" type="text" placeholder = "Pass w/ Conditions"></input>
                   </li>
@@ -73,43 +84,14 @@
         </div>
       </aside>
     </div>
-
-      <!-- -- Table -- -->
-      <div class="col-md-10">
-        <div id="table-area" class="">
-          <table id="inspection-table" class="table table-striped table-hover">
-            <thead>
-              <tr>
-                <th class="table-head">Address</th>
-                <th class="table-head">Name</th>
-                <th class="table-head">Facility Type</th>
-                <th class="table-head">Inspection Date</th>
-                <th class="table-head">Inspection ID</th>
-                <th class="table-head">Results</th>
-                <th class="table-head">Risk</th>
-                <th class="table-head">Violations</th>              
-              </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
-          <div class="row" id="resultMessage"></div>
-        </div>
-  </div>
-</div>
-
-    
-    <!-- --------------------------- -->
-    <div class="container">
-      <div class="row" id="mapAndDonut">
-        <div class="col-md-6">
+        <div class="col-lg-5">
           <div class="caption">
             <h3>Chicago Food Inspection Map</h3>
             <!-- The div where we will inject our risk pie chart -->
             <div id="map-id" class="card"></div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-5">
           <div class="caption">
             <h3>Facility Inspection Results</h3>
             <!-- The div where we will inject our facility distribution pie chart -->
@@ -121,8 +103,38 @@
             </div>
           </div>
         </div>
+        <div class="row" id="resultMessage"></div>
     </div>
+</div>
+
+    
+    <!-- --------------------------- -->
+    <div class="features">
+      <div class="row" id="tableDiv">
+      <!-- -- Table -- -->
+      <div class="col">
+        <div id="table-area" class="">
+          <table id="inspection-table" class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th class="table-head">Inspection ID</th>
+                <th class="table-head">Address</th>
+                <th class="table-head">Name</th>
+                <th class="table-head">Facility Type</th>
+                <th class="table-head">Inspection Date</th>
+                <th class="table-head">Results</th>
+                <th class="table-head">Risk</th>
+                <th class="table-head">Violations</th>              
+              </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
   </div>
+
+
 
   <footer class="footer">
     <span class="bottom"><a href="/api">Full data in JSON format</a></span>

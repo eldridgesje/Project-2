@@ -50,10 +50,10 @@ The `Resources` folder contains the file `updated_food_inspection.csv`, which ca
     * You can search by `ID`, `Name`, `Facility Type`, `Risk Level`, and `Results` in the left-hand filter.
         * Search results are also limited to the most recent 500 records.
         * Search uses partial-match filtering to return results.
-        * Search results power the table, map, and donut chart.
+        * Search results power the map, donut chart, and table.
         * Search results can be easily cleared using the `Rest Data` button.
     * You can click on any result in the map to see the facility's name, address, and inspection ID.
-        * Inspection ID can then be used in the filter to find full information for a single facility.
+        * Inspection ID can then be used in the filter to find full information for a single facility in the table.
     * You can turn on and off facility risk layers in the map's layer stack control, e.g. to display only low-risk facilities.
     * You can use the donut chart to see inspection results for a group fo related facilities, e.g. all "Chipotle" franchises, using the filter.
         * Hovering over a region on the chart gives you the full count of facilities matching that result.
