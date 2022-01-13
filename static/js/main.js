@@ -66,6 +66,7 @@ function startUp() {
     drawTable(startData);
     drawDonut(startData);
     drawMap(startData);
+    barChart(startData);
     }
     )};
 
@@ -95,6 +96,8 @@ function updateTable() {
     layers.MEDIUM_RISK.clearLayers();
     layers.LOW_RISK.clearLayers();
     drawMap(updateData);
+
+    barChart(updateData);
 })
 };
 
@@ -369,6 +372,80 @@ function drawMap (data) {
     };
 
 }
+
+
+
+// Bar Chart Stuff
+
+function barChart(inputData) {
+
+    restaurantCount = 0;
+    groceryCount = 0;
+    schoolCount = 0;
+    childrenCount = 0;
+    daycareCount = 0;
+    bakeryCount = 0;
+    longTermCount = 0;
+    otherCount = 0;
+
+    inputData.forEach(function (item, index) {
+
+        if (item["facility_type"].toLowerCase().includes("restaurant")) {
+            restaurantCount ++;
+        }
+        else if (item["facility_type"].toLowerCase().includes("grocery")) {
+            groceryCount ++;
+        }
+        else if (item["facility_type"].toLowerCase().includes("school")) {
+            schoolCount ++;
+        }
+        else if (item["facility_type"].toLowerCase().includes("children's services")) {
+            childrenCount ++;
+        }
+        else if (item["facility_type"].toLowerCase().includes("daycare")) {
+            daycareCount ++;
+        }
+        else if (item["facility_type"].toLowerCase().includes("bakery")) {
+            bakeryCount ++;
+        }
+        else if (item["facility_type"].toLowerCase().includes("long term")) {
+            longTermCount ++;
+        }
+        else  {
+            otherCount ++;
+        }
+
+    }
+    );
+
+    let barData = [otherCount, longTermCount, bakeryCount, daycareCount, childrenCount, schoolCount, groceryCount, restaurantCount ] 
+
+    let barLabels = ["Other", "Long Term Care Facility", "Bakery", "Daycare", "Children's Services", "School", "Grocery", "Restaurant"];
+
+    let plotData = {
+        x: barData,
+        y: barLabels,
+        marker: {
+            color: ["purple","grey","orange","cyan","yellow","green","red","blue"]
+        },
+        type: "bar",
+        orientation: "h"
+    };
+
+    console.log (barLabels);
+    console.log (barData);
+
+    let barArray = [plotData];
+
+    let barLayout = {
+        yaxis: {automargin: true},
+        margin: {t: 20, b:20}
+    }
+
+    Plotly.newPlot("bar-chart", barArray, barLayout);
+
+}
+
 
 
 startUp()

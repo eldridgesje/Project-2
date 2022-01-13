@@ -34,6 +34,17 @@ body
   background-color: rgb(255, 255, 255, 0.9);
 }
 
+#barDiv {
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 2%;
+  padding-left: 1%;
+  padding-right: 1%;
+  padding-bottom: 1%;
+  padding-top: 1%;
+  background-color: rgb(255, 255, 255, 0.9);
+}
+
 #map-id {
   padding-top: 100%;
   width: 100%;
