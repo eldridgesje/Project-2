@@ -216,7 +216,7 @@ function drawDonut(donutData) {
                         'rgba(209, 0, 0, 0.6)',
                         'rgba(50, 50, 50, 0.6)',
                         'rgba(200, 200, 200, 0.6)',
-                        'rgba(255, 255, 150, 0.6)'
+                        'rgba(255, 255, 0, 0.6)'
                     ],
                     borderColor: [
                         'rgba(0, 209, 0, 1)',
@@ -426,7 +426,7 @@ function barChart(inputData) {
         x: barData,
         y: barLabels,
         marker: {
-            color: ["purple","grey","orange","cyan","yellow","green","red","blue"]
+            color: ["rgba(255, 255, 0, 0.6)","rgba(50, 50, 50, 0.6)","rgba(209, 110, 0, 0.6)","rgba(0, 209, 209, 0.6)","rgba(110, 0, 209, 0.6)","rgba(0, 209, 0, 0.6)","rgba(209, 0, 0, 0.6)","rgba(0, 0, 209, 0.6)"]
         },
         type: "bar",
         orientation: "h"
@@ -442,7 +442,9 @@ function barChart(inputData) {
         margin: {t: 20, b:20}
     }
 
-    Plotly.newPlot("bar-chart", barArray, barLayout);
+    let config = {responsive: true}
+
+    Plotly.newPlot("bar-chart", barArray, barLayout, config);
 
 }
 
