@@ -74,6 +74,11 @@ The `Resources` folder contains the file `updated_food_inspection.csv`, which ca
 3. Run `flask_app.py` to start the Flask server.
 4. Take note of the local host address Python returns.
 
+### Update config.js
+1. In the project folder, navigate to `static` then `js`.
+2. Open `config.js`.
+3. set `API_KEY` to your Mapbox API access token.
+
 
 ### Use the Dashboard
 
